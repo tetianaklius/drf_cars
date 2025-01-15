@@ -2,6 +2,7 @@ from django.db import models
 
 from apps.auth_user.user.models import UserModel
 from core.models import BaseModel
+from core.services.file_service import upload_adv_photo
 
 
 class CarAdvertModel(BaseModel):
@@ -11,6 +12,7 @@ class CarAdvertModel(BaseModel):
     title = models.CharField(max_length=60)
     # location_city_name =
 
+    photo = models.ImageField(upload_to=upload_adv_photo, blank=True)
     # category =
     # brand =
     # model =

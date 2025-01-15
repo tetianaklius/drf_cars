@@ -12,3 +12,9 @@ class AdvertSerializer(serializers.ModelSerializer):
     #     user_id = self.request.user.id
     # user_id = serializers.ReadOnlyField(source="user.id")
 
+
+class AdvertPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarAdvertModel
+        fields = ("photo",)
+
