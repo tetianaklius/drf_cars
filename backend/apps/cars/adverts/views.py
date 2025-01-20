@@ -1,13 +1,17 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView, ListAPIView
+from rest_framework.permissions import AllowAny
 
 from apps.auth_user.user.permissions import IsSuperUser
+from apps.cars.adverts.filter import AdvertFilter
 from apps.cars.adverts.models import CarAdvertModel
 from apps.cars.adverts.serializers import AdvertSerializer, AdvertPhotoSerializer
 
 
-class AdvertListCreateView(ListCreateAPIView):
+class AdvertListView(ListAPIView):
     serializer_class = AdvertSerializer
     queryset = CarAdvertModel.objects.all()
+    filterset_class = AdvertFilter
+    permission_classes = (AllowAny,)
 
 
 class AdvertRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):

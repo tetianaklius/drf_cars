@@ -1,9 +1,9 @@
 from django.urls import path
 
-from apps.cars.adverts.views import AdvertListCreateView, AdvertAddPhotoView, AdvertRetrieveUpdateDestroyView
+from apps.cars.adverts.views import AdvertListView, AdvertAddPhotoView, AdvertRetrieveUpdateDestroyView
 
 urlpatterns = [
-    path("", AdvertListCreateView.as_view()),
+    path("", AdvertListView.as_view()),
     path("/<int:pk>", AdvertRetrieveUpdateDestroyView.as_view()),
     path("/<int:pk>/photo", AdvertAddPhotoView.as_view()),
 ]

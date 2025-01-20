@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'django_celery_beat',
+    'django_celery_results',
+    'django_filters',
 
     # my_apps
     "core",
@@ -42,6 +45,10 @@ INSTALLED_APPS = [
     "apps.auth_user.user",
     "apps.cars.categories",
     "apps.cars.adverts",
+    "apps.cars.brand",
+    "apps.cars.car_model",
+    "apps.cars.location_city",
+    "apps.cars.car_dealership",
 
 ]
 
