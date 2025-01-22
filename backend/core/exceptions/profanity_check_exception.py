@@ -1,0 +1,2 @@
+class ProfanityCheckException(Exception):
+    pass

@@ -5,7 +5,8 @@ from rest_framework.views import exception_handler
 
 def error_handler(exception: Exception, context: dict):
     handlers = {
-        "JWTException": _jwt_validation_exception_handler
+        "JWTException": _jwt_validation_exception_handler,
+        "ProfanityCheckException": _profanity_check_exception_handler,
     }
     response = exception_handler(exception, context)
     exception_class = exception.__class__.__name__
@@ -18,3 +19,13 @@ def error_handler(exception: Exception, context: dict):
 
 def _jwt_validation_exception_handler(exception, context):
     return Response({"detail": "JWT expired or invalid"}, status.HTTP_401_UNAUTHORIZED)
+
+
+def _profanity_check_exception_handler(exception, context):
+    return Response(
+        {
+            "Message": "Sorry, but your advert contains profanity words. You need to edit it. You have 3 attempts "
+                       "to do it.",
+        },
+        status.HTTP_406_NOT_ACCEPTABLE
+    )

@@ -16,6 +16,7 @@ class CarAdvertModel(BaseModel):
     class Meta:
         db_table = "adverts"
 
+    is_active = models.BooleanField(default=False)
     car_dealership_id = models.ForeignKey(CarDealershipModel, default=-1, on_delete=models.CASCADE,
                                           related_name="adverts")
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="adverts")
