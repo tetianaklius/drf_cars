@@ -24,17 +24,20 @@ class CarDealershipAddAdvertView(ListCreateAPIView):
         car_dealership = self.get_object()
         serializer = AdvertSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        res = ProfanityChecker.check_profanity(self, data=serializer.validated_data)              #
+        res = ProfanityChecker.check_profanity(self, data=serializer.validated_data)
+        if res == "Deactivate":
+            serializer.save(car_dealership_id=car_dealership, is_active=False)
+            car_dealership_serializer = CarDealershipSerializer(car_dealership)
+            # надсилається лист менеджерові, щоб перевірив оголошення
+            return Response(
+                {"data": car_dealership_serializer.data,
+                 "Message": "Because your advert contains profanity words, it has been sent to a manager for review. "
+                            "Expect a response within 24 hours",
+                 },
+                status.HTTP_202_ACCEPTED)
         if res:
             serializer.save(car_dealership_id=car_dealership, is_active=True)
         else:
             raise ProfanityCheckException
         car_dealership_serializer = CarDealershipSerializer(car_dealership)
         return Response(car_dealership_serializer.data, status.HTTP_201_CREATED)
-
-    # def perform_update(self, serializer):          # todo
-    #     if serializer.count == 3:
-    #         self.instance.is_active = False
-    #         # надсилається лист менеджерові, щоб перевірив оголошення
-    #         return
-    #     serializer.count += 1

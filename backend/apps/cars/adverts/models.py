@@ -32,3 +32,4 @@ class CarAdvertModel(BaseModel):
     description = models.TextField(blank=False, null=False,
                                    validators=[v.MinLengthValidator(100), v.MaxLengthValidator(6000)])
     photo = models.ImageField(upload_to=upload_adv_photo, blank=True)
+    profanity_edit_count = models.IntegerField(default=1, validators=[v.MinValueValidator(1)])
