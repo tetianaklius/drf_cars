@@ -3,8 +3,9 @@ from django.db import OperationalError, connection
 from django.db.backends.dummy.base import DatabaseWrapper
 import time
 
+connection: DatabaseWrapper = connection
 
-connection:DatabaseWrapper = connection
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Waiting for db")

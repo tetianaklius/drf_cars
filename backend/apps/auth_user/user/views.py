@@ -1,21 +1,66 @@
 import os
 
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, GenericAPIView
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
+from rest_framework import status
+from rest_framework.generics import ListCreateAPIView, GenericAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
-from apps.auth_user.user.models import UserModel
 from apps.auth_user.user.serializers import UserModelSerializer
+from core.pagination import CustomPagePagination
+
+UserModel = get_user_model()
 
 
 class UserListCreateView(ListCreateAPIView):
-    model = UserModel
     queryset = UserModel.objects.all()
     serializer_class = UserModelSerializer
-    permission_classes = [AllowAny]
+    pagination_class = CustomPagePagination
+    permission_classes = (AllowAny,)
+
+
+class BlockUserView(GenericAPIView):
+    def get_queryset(self):
+        return UserModel.objects.exclude(id=self.request.user.id)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        if user.is_active:
+            user.is_active = False
+            user.save()
+
+        serializer = UserModelSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UnBlockUserView(GenericAPIView):
+    def get_queryset(self):
+        return UserModel.objects.exclude(id=self.request.user.id)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+
+        serializer = UserModelSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserToAdminView(GenericAPIView):
+    def get_queryset(self):
+        return UserModel.objects.exclude(id=self.request.user.id)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        if not user.is_staff:
+            user.is_staff = True
+            user.save()
+
+        serializer = UserModelSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SendEmailTestView(GenericAPIView):

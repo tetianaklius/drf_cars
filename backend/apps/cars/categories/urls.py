@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import CarCategoryArrayListCreateView
+from .views import CarCategoryListCreateView
 
 urlpatterns = [
-    path("/array", CarCategoryArrayListCreateView.as_view()),
+    path("", CarCategoryListCreateView.as_view()),
 ]

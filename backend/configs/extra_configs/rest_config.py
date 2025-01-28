@@ -9,8 +9,13 @@ REST_FRAMEWORK = {
         "apps.auth_user.user.permissions.IsSuperUser",
     ],
     "EXCEPTION_HANDLER": "core.handlers.error_handler.error_handler",
-    "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPagePagination",
+    # "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPagePagination",
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
 }
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'guardian.backends.ObjectPermissionBackend',
+)

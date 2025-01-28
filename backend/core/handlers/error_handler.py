@@ -24,8 +24,10 @@ def _jwt_validation_exception_handler(exception, context):
 def _profanity_check_exception_handler(exception, context):
     return Response(
         {
-            "Message": "Sorry, but your advert contains profanity words. You need to edit it. You have 3 attempts "
-                       "to do it.",
+            "Message": "Sorry, but your advert contains profanity words. You need to edit it. "
+                       "You have 3 attempts to do it before the advert becomes inactive and an email asking for review "
+                       "will be sent to the manager.",
         },
+        # тут має вивестися посилання, за яким можна редагувати (id оголошення треба) todo
         status.HTTP_406_NOT_ACCEPTABLE
     )

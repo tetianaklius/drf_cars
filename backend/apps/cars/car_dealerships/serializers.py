@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.cars.adverts.serializers import AdvertSerializer
-from apps.cars.car_dealership.models import CarDealershipModel
+from apps.cars.car_dealerships.models import CarDealershipModel
 
 
 class CarDealershipSerializer(serializers.ModelSerializer):
@@ -10,7 +10,9 @@ class CarDealershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarDealershipModel
         fields = (
-            "id",
+            # "id",
+            "is_visible",
+            "is_active",
             "name",
             "description",
             "phone",
@@ -18,7 +20,11 @@ class CarDealershipSerializer(serializers.ModelSerializer):
             "dealership_city",
             "street",
             "house",
-            "add_address_info",
+            "additional_address_info",
+            "user_id",
             "adverts"
         )
+        read_only_fields = ["is_visible", "is_active", "user_id", "profanity_edit_count"]
+        # write_only_fields = ["profanity_edit_count"]
+        # extra_kwargs = {"is_active": {'write_only': True, }}
         # depth = 1
