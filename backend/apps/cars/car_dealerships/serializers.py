@@ -10,7 +10,7 @@ class CarDealershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarDealershipModel
         fields = (
-            # "id",
+            "id",
             "is_visible",
             "is_active",
             "name",

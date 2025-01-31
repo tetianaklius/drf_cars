@@ -4,13 +4,15 @@ from django.core import validators as v
 
 from apps.currency.models import CurrencyModel
 from core.models import BaseModel
-from apps.auth_user.user.models import UserModel
 from apps.cars.categories.models import CarCategoryModel
 from apps.cars.brands.models import BrandModel
 from apps.cars.car_models.models import CarModelModel
 from apps.cars.location_city.models import CityModel
 from apps.cars.car_dealerships.models import CarDealershipModel
 from core.services.file_service import upload_adv_photo
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
 
 
 class CarAdvertModel(BaseModel):

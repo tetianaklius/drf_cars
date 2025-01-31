@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "apps.currency",
     "apps.visits_count",
     "apps.chat",
+    "apps.profile_staff"
 
 ]
 
