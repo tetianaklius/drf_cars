@@ -16,4 +16,3 @@ class AdvertFilter(filters.FilterSet):
             "updated_at"
         )
     )  # order=name asc (# order=-name desc)
-

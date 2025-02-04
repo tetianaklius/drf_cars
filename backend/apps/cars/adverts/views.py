@@ -2,6 +2,7 @@ from rest_framework.generics import UpdateAPIView, ListAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.sessions.models import Session
 
 
 from apps.cars.adverts.filters import AdvertFilter
@@ -13,6 +14,9 @@ from core.checkers.profanity_checker import ProfanityChecker
 from core.exceptions.profanity_check_exception import ProfanityCheckException
 from core.pagination import CustomPagePagination
 from core.services.avg_prices_service import get_avg_prices
+# from core.services.sessions_service import register_session
+
+# from django.contrib.user_sessions.models import Session
 
 
 class AdvertListView(ListAPIView):             # all adverts list
@@ -21,6 +25,18 @@ class AdvertListView(ListAPIView):             # all adverts list
     filterset_class = AdvertFilter
     pagination_class = CustomPagePagination
     permission_classes = (AllowAny,)
+
+    # def get(self, request, *args, **kwargs):   ## todo here is start of sessions creating
+    #     user = request.user
+    #     session = request.session
+    #     # session = Session.objects.get(session_key=request.session.session_key)
+    #     # session = Session.objects.get(pk=user.id)
+    #     register_session(user, request)
+    #     print(session.keys())
+    #     print("********************************")
+    #
+    # # >> > s.expire_date
+    # # datetime.datetime(2005, 8, 20, 13, 35, 12)
 
 
 class AdvertListByUserIdView(ListAPIView):           # adverts created by current user

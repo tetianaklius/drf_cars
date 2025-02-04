@@ -18,6 +18,23 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
 
+# class ProfileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProfileModel
+#         fields = (
+#             "id",
+#             "name",
+#             "surname",
+#             "age",
+#             "phone",
+#             "city",
+#             "profession",
+#             "interests",
+#             "created_at",
+#             "updated_at"
+#         )
+
+
 class UserModelSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
 

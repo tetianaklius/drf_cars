@@ -4,21 +4,85 @@ from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, GenericAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, \
+    RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from apps.auth_user.user.filters import UsersFilter
+from apps.auth_user.user.models import ProfileModel
 from apps.auth_user.user.serializers import UserModelSerializer
 from core.pagination import CustomPagePagination
 
 UserModel = get_user_model()
 
 
-class UserListCreateView(ListCreateAPIView):
-    queryset = UserModel.objects.all()
+class UsersListView(ListAPIView):
+    queryset = ProfileModel.objects.all()
     serializer_class = UserModelSerializer
     pagination_class = CustomPagePagination
+    permission_classes = (IsAuthenticated,)
+    filterset_class = UsersFilter
+
+
+class UserCreateView(CreateAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = UserModelSerializer
     permission_classes = (AllowAny,)
+
+
+class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = UserModelSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        if self.kwargs["pk"]:
+            searched_id = self.kwargs["pk"]
+            user = UserModel.objects.filter(id=searched_id).first()
+            if user:
+                return Response(self.get_serializer(user).data, status=status.HTTP_200_OK)
+            else:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        if self.kwargs["email"]:
+            searched_email = self.kwargs["email"]
+            user = UserModel.objects.filter(email=searched_email).first()
+            if user:
+                return Response(self.get_serializer(user).data, status=status.HTTP_200_OK)
+            else:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response("To search user you should write user id or user email.",
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        user = self.request.user
+        user_to_update = self.get_object()
+        if user.is_authenticated and user.id == user_to_update.id:
+            serializer = self.get_serializer(user_to_update, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {
+                    "Message": "You can edit only your personal account.",
+                },
+                status.HTTP_403_FORBIDDEN
+            )
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        user_to_delete = self.get_object()
+        if user.is_authenticated and user.id == user_to_delete.id:
+            user_to_delete.destroy()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {
+                "Message": "You can delete only your personal account.",
+            },
+            status.HTTP_403_FORBIDDEN
+        )
 
 
 class BlockUserView(GenericAPIView):
@@ -36,6 +100,7 @@ class BlockUserView(GenericAPIView):
 
 
 class UnBlockUserView(GenericAPIView):
+
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id)
 
@@ -50,6 +115,7 @@ class UnBlockUserView(GenericAPIView):
 
 
 class UserToAdminView(GenericAPIView):
+
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id)
 

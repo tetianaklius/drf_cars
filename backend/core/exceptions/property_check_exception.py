@@ -1,0 +1,2 @@
+class PropertyCheckException(Exception):
+    pass

@@ -1,7 +1,6 @@
 from django.db.transaction import atomic
 from django.contrib.auth.models import Group, ContentType
 
-from guardian.shortcuts import get_perms
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny

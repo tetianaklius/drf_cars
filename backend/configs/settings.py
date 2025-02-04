@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_filters",
     "guardian",
+    "django.contrib.sessions",
 
     # my_apps
     "core",
@@ -54,12 +55,15 @@ INSTALLED_APPS = [
     "apps.currency",
     "apps.visits_count",
     "apps.chat",
-    "apps.profile_staff"
+    "apps.profile_staff",
+    "apps.user_sessions",
+    "apps.posts"
 
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
 ]
 

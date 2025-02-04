@@ -30,3 +30,21 @@ class ProfileModel(BaseModel):
 
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name="profile")
     # objects = models.Manager()
+
+
+# class ProfileModel(BaseModel):
+#     class Meta:
+#         db_table = "profile"
+#         ordering = ["-id"]
+#
+#     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name="profile")
+#
+#     name = models.CharField(max_length=20)
+#     surname = models.CharField(max_length=20)
+#     age = models.IntegerField(max_length=130)
+#     phone = models.CharField(max_length=20, unique=True, blank=True)
+#     city = models.CharField(max_length=30)
+#     profession = models.CharField(max_length=40, blank=True)
+#     interests = models.CharField(max_length=150, blank=True)
+#
+#     # objects = models.Manager()
